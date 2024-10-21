@@ -1,11 +1,10 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 
 const Summary = () => {
     const [dailySummaries, setDailySummaries] = useState([]);
-
 
     useEffect(() => {
         async function fetchDailySummaries() {
@@ -23,7 +22,7 @@ const Summary = () => {
         <div className="p-5">
             <h1 className="text-2xl font-bold mb-4">Daily Weather Summaries</h1>
 
-
+            {/* Line chart for temperature trends */}
             <h2 className="text-xl font-semibold mt-8">Temperature Trends</h2>
             <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={dailySummaries}>
@@ -38,31 +37,27 @@ const Summary = () => {
                 </LineChart>
             </ResponsiveContainer>
 
-
-
-
-
-
+            {/* Alert for high temperatures */}
             <ul className="list-disc pl-5">
                 {dailySummaries.map((summary, index) => (
                     summary.maxTemp > 35 && (
                         <li key={index} className="text-red-600">
-                            Alert: High temperature in {summary.city} (Max: {summary.maxTemp.toFixed(1)}°C)
+                            Alert: High temperature in {summary.city} (Max: {summary.maxTemp ? summary.maxTemp.toFixed(1) : 'N/A'}°C)
                         </li>
                     )
                 ))}
             </ul>
 
-
+            {/* Daily Summaries by City */}
             <h2 className="text-xl font-semibold mt-8">Daily Summaries by City</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {dailySummaries.map((summary) => (
                     <div key={summary.city} className="border rounded-lg p-4 shadow-md">
                         <h3 className="text-lg font-semibold">{summary.city}</h3>
-                        <p>🌡 Avg Temp: {summary.avgTemp.toFixed(1)}°C</p>
-                        <p>🌡 Max Temp: {summary.maxTemp.toFixed(1)}°C</p>
-                        <p>🌡 Min Temp: {summary.minTemp.toFixed(1)}°C</p>
-                        <p>☀️ Dominant Condition: {summary.dominantCondition}</p>
+                        <p>🌡 Avg Temp: {summary.avgTemp ? summary.avgTemp.toFixed(1) : 'N/A'}°C</p>
+                        <p>🌡 Max Temp: {summary.maxTemp ? summary.maxTemp.toFixed(1) : 'N/A'}°C</p>
+                        <p>🌡 Min Temp: {summary.minTemp ? summary.minTemp.toFixed(1) : 'N/A'}°C</p>
+                        <p>☀️ Dominant Condition: {summary.dominantCondition || 'N/A'}</p>
                     </div>
                 ))}
             </div>
